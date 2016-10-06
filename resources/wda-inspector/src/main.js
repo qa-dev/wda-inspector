@@ -4,7 +4,7 @@ var Info = require('./Info/Info.js');
 
 $(function () {
 
-    var screen = new Screen($('#screenshot'));
+    var screen = new Screen($('.wda_screen_container'));
     $.ajax({
         method: 'get',
         url: '/screenshot',
@@ -23,9 +23,9 @@ $(function () {
         }
     });
 
-    var info = new Info($('#element-data'));
+    var info = new Info($('.wda_info_container'));
 
-    var tree = new Tree($('#tree'));
+    var tree = new Tree($('.wda_tree_container'));
     tree.onElementFocus(function(rect) {
         screen.highlight(
             rect.origin.x,
@@ -60,6 +60,18 @@ $(function () {
         error: function() {
             tree.error('Не удалось загрузить дерево элементов');
         }
+    });
+
+    $('#search-form').submit(function () {
+        $.post("/find", $(this).serialize())
+            .done(function (data) {
+                selectEl($(".el-type[data-rect='" + JSON.stringify(data.value) + "']"))
+                drawRect(data.value)
+            })
+            .fail(function (data) {
+                alert(data.responseJSON.message);
+            });
+        return false;
     });
 
 });

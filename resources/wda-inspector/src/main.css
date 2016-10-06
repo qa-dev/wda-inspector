@@ -1,0 +1,30 @@
+@import './Info/main.css';
+@import './Screen/main.css';
+@import './Tree/main.css';
+
+.wda_container {
+    padding: 60px 0 0;
+}
+.wda_info {
+}
+.wda_info_container {
+    min-height: 200px;
+    text-align: center;
+}
+.wda_screen {
+    padding: 10px;
+    min-width: 300px;
+    min-height: 500px;
+    float: left;
+}
+.wda_screen_container {
+    position: relative;
+}
+.wda_tree {
+    padding: 10px;
+    overflow: hidden;
+}
+.wda_tree_container {
+    height: 500px;
+    overflow: auto;
+}

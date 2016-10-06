@@ -123,13 +123,13 @@ var Screen = function($el) {
 
 module.exports = Screen;
 },{"./tpl/error.html":4,"./tpl/highlight.html":5,"./tpl/lockOverlay.html":6,"mustache":12}],4:[function(require,module,exports){
-module.exports = "<div class=\"screen_error\">\n    {{message}}\n</div>";
+module.exports = "<div class=\"wda_screen_error\">\n    {{message}}\n</div>";
 
 },{}],5:[function(require,module,exports){
-module.exports = "<div class=\"highlight-el\"></div>";
+module.exports = "<div class=\"wda_screen_highlight\"></div>";
 
 },{}],6:[function(require,module,exports){
-module.exports = "<div class=\"screen_lock-overlay\">\n    <div class=\"screen_lock-overlay_spinner\"></div>\n</div>";
+module.exports = "<div class=\"wda_screen_lock-overlay\">\n    <div class=\"wda_screen_lock-overlay_spinner\"></div>\n</div>";
 
 },{}],7:[function(require,module,exports){
 var Mustache = require('mustache');
@@ -251,7 +251,7 @@ var Info = require('./Info/Info.js');
 
 $(function () {
 
-    var screen = new Screen($('#screenshot'));
+    var screen = new Screen($('.wda_screen_container'));
     $.ajax({
         method: 'get',
         url: '/screenshot',
@@ -270,9 +270,9 @@ $(function () {
         }
     });
 
-    var info = new Info($('#element-data'));
+    var info = new Info($('.wda_info_container'));
 
-    var tree = new Tree($('#tree'));
+    var tree = new Tree($('.wda_tree_container'));
     tree.onElementFocus(function(rect) {
         screen.highlight(
             rect.origin.x,
