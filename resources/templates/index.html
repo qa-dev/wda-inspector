@@ -44,7 +44,12 @@
         <div class="col-md-12 col-lg-12 bordered text-center"><div id="element-data"></div></div>
     </div>
     <div class="raw content-wr">
-        <div class="col-md-4 col-lg-4 bordered text-center"><div id="screenshot"><div class="highlight-el"></div><img src="" /></div></div>
+        <div class="col-md-4 col-lg-4 bordered text-center">
+            <div id="screenshot">
+                <div class="highlight-el"></div>
+                <canvas id="img"></canvas>
+            </div>
+        </div>
         <div class="col-md-7 col-lg-7 bordered"><div id="tree"></div></div>
     </div>
 </div>
@@ -55,15 +60,22 @@
 <script type="text/javascript">
     function updateScreen() {
         $.get("/screenshot")
-                .done(function (data) {
-                    $('#screenshot img').attr('src', "data:image/png;base64," + data.img +"");
-                    $('#screenshot img').css('width', $('#screenshot img').width()/2 + "px");
-                    $('#screenshot').css('width', $('#screenshot img').css('width'));
-                    $('#screenshot').css('height', $('#screenshot img').css('height'));
-                })
-                .fail(function (data) {
-                    alert(data.responseJSON.message);
-                });
+            .done(function (data) {
+                var $canvas = $("#img");
+                var ctx = $canvas.get(0).getContext("2d");
+                var image = new Image();
+                image.onload = function() {
+                    var w = image.width / 2,
+                        h = image.height / 2;
+                    $canvas.prop({'width': w, 'height': h});
+                    $('#screenshot').css({'width': w, 'height': h});
+                    ctx.drawImage(image, 0, 0, image.width / 2, image.height / 2);
+                };
+                image.src = "data:image/png;base64," + data.img;
+            })
+            .fail(function (data) {
+                alert(data.responseJSON.message);
+            });
     }
 
     function updateSource() {
@@ -200,6 +212,10 @@
     .bordered {
         border: 1px solid #D5DCDE;
         padding: 30px;
+    }
+    #tree {
+        height: 500px;
+        overflow: auto;
     }
     #tree ul {
         padding-left: 20px;
