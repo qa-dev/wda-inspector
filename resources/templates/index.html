@@ -69,7 +69,7 @@
                         h = image.height / 2;
                     $canvas.prop({'width': w, 'height': h});
                     $('#screenshot').css({'width': w, 'height': h});
-                    ctx.drawImage(image, 0, 0, image.width / 2, image.height / 2);
+                    ctx.drawImage(image, 0, 0, w, h);
                 };
                 image.src = "data:image/png;base64," + data.img;
             })
