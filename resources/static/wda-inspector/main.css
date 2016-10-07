@@ -1,4 +1,7 @@
-/**/
+.wda_info_content {
+    max-width: 300px;
+    overflow: auto;
+}
 .wda_screen_highlight {
     background-color: rgba(255, 0, 0, 0.3);
     position: absolute;
@@ -8,11 +11,9 @@
     padding: 0 0 0 20px;
     margin: 0 0 10px 10px;
 }
-
 .wda_tree ul ul {
     border-left: dotted 1px #ccc;
 }
-
 .wda_container {
     padding: 60px 0 0;
     position: relative;
@@ -22,14 +23,14 @@
     position: absolute;
     top: 0;
     right: 0;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    background-color: rgba(255, 255, 255, 0.8);
 }
 .wda_info_container {
     padding: 10px;
     min-height: 200px;
     min-width: 200px;
     text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.8);
 }
 .wda_screen {
     padding: 10px;

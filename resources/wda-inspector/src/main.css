@@ -11,14 +11,14 @@
     position: absolute;
     top: 0;
     right: 0;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    background-color: rgba(255, 255, 255, 0.8);
 }
 .wda_info_container {
     padding: 10px;
     min-height: 200px;
     min-width: 200px;
     text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.8);
 }
 .wda_screen {
     padding: 10px;
