@@ -1,1 +1,9 @@
-/**/
+.wda_tree ul {
+    list-style: none;
+    padding: 0 0 0 20px;
+    margin: 0 0 10px 10px;
+}
+
+.wda_tree ul ul {
+    border-left: dotted 1px #ccc;
+}

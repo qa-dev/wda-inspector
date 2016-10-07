@@ -205,7 +205,6 @@ var Tree = function($el) {
                     .addClass("glyphicon-minus")
                     .closest("li")
                     .children("ul")
-                    .addClass("glyphicon-minus")
                     .css("display", "block");
             }
 
