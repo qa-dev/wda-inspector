@@ -1,0 +1,13 @@
+{
+  "name": "wda-inspector",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "devDependencies": {
+    "browserify": "^13.1.0",
+    "stringify": "^5.1.0"
+  },
+  "dependencies": {
+    "mustache": "^2.2.1"
+  }
+}

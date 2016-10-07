@@ -1,0 +1,39 @@
+@import './Info/main.css';
+@import './Screen/main.css';
+@import './Tree/main.css';
+
+.wda_container {
+    padding: 60px 0 0;
+    position: relative;
+}
+.wda_info {
+    padding: 60px 0 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.8);
+}
+.wda_info_container {
+    padding: 10px;
+    min-height: 200px;
+    min-width: 200px;
+    text-align: center;
+}
+.wda_screen {
+    padding: 10px;
+    min-width: 300px;
+    min-height: 500px;
+    float: left;
+}
+.wda_screen_container {
+    position: relative;
+}
+.wda_tree {
+    padding: 10px;
+    overflow: hidden;
+}
+.wda_tree_container {
+    height: 500px;
+    overflow: auto;
+}
