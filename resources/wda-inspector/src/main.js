@@ -1,6 +1,7 @@
 var Screen = require('./Screen/Screen.js');
 var Tree = require('./Tree/Tree.js');
 var Info = require('./Info/Info.js');
+var Search = require('./Search/Search.js');
 
 $(function () {
 
@@ -42,6 +43,7 @@ $(function () {
             rect.size.width,
             rect.size.height
         );
+        screen.highlightSelection();
         info.update(infoData);
     });
     $.ajax({
@@ -62,16 +64,17 @@ $(function () {
         }
     });
 
-    $('#search-form').submit(function () {
-        $.post("/find", $(this).serialize())
-            .done(function (data) {
-                tree.select(data.value); // todo надо бы id
-            })
-            .fail(function (data) {
-                alert(data.responseJSON.message);
-            });
-
-        return false;
+    var search = new Search($('#navbar'), {
+        url: '/find',
+        success: function(data) {
+            tree.select(data.value); // todo надо бы id
+        },
+        notFound: function(locator) {
+            info.error(locator + ' not found!');
+        },
+        error: function(locator) {
+            info.error('Wrong locator ' + locator);
+        }
     });
 
 });

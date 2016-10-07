@@ -1,11 +1,13 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var Mustache = require('mustache');
 var tpl = {
-    info: require('./tpl/info.html')
+    info: require('./tpl/info.html'),
+    error: require('./tpl/error.html')
 };
 
 var Info = function($el) {
 
+    var _previousColor;
 
     var _render = function($content) {
         $el
@@ -13,18 +15,44 @@ var Info = function($el) {
             .append($content);
     };
 
+    var _blink = function(color) {
+        $el
+            .stop()
+            .animate({
+                'background-color': color
+            }, 100)
+            .animate({
+                'background-color': _previousColor
+            }, 500)
+    };
+
     this.update = function(info) {
         var $content = $(Mustache.render(tpl.info, {info: info}));
         _render($content);
+        _blink('rgba(250, 255, 189, 0.8)');
     };
+
+    this.error = function(message) {
+        var $content = $(Mustache.render(tpl.error, {message: message}));
+        _render($content);
+        _blink('rgba(255, 150, 150, 0.8)');
+    };
+
+    // INIT
+    (function() {
+        _previousColor = $el.css('background-color');
+    })();
 
 };
 
 module.exports = Info;
-},{"./tpl/info.html":2,"mustache":12}],2:[function(require,module,exports){
-module.exports = "<strong>Class</strong> {{info.type}} <br>\n<strong>Name</strong> {{info.name}} <br>\n<strong>Label</strong> {{info.label}} <br>\n<strong>Value</strong> {{info.value}} <br>\n<strong>Rect</strong> {{info.frame}} <br>\n<strong>isEnabled</strong> {{info.isEnabled}} <br>\n<strong>isVisible</strong> {{info.isVisible}} <br>";
+},{"./tpl/error.html":2,"./tpl/info.html":3,"mustache":15}],2:[function(require,module,exports){
+module.exports = "<div>{{message}}</div>";
 
 },{}],3:[function(require,module,exports){
+module.exports = "<div class=\"wda_info_content\">\n    <strong>Class</strong> {{info.type}} <br>\n    <strong>Name</strong> {{info.name}} <br>\n    <strong>Label</strong> {{info.label}} <br>\n    <strong>Value</strong> {{info.value}} <br>\n    <strong>Rect</strong> {{info.frame}} <br>\n    <strong>isEnabled</strong> {{info.isEnabled}} <br>\n    <strong>isVisible</strong> {{info.isVisible}} <br>\n</div>\n";
+
+},{}],4:[function(require,module,exports){
 var Mustache = require('mustache');
 var tpl = {
     highlight: require('./tpl/highlight.html'),
@@ -122,16 +150,87 @@ var Screen = function($el) {
 };
 
 module.exports = Screen;
-},{"./tpl/error.html":4,"./tpl/highlight.html":5,"./tpl/lockOverlay.html":6,"mustache":12}],4:[function(require,module,exports){
+},{"./tpl/error.html":5,"./tpl/highlight.html":6,"./tpl/lockOverlay.html":7,"mustache":15}],5:[function(require,module,exports){
 module.exports = "<div class=\"wda_screen_error\">\n    {{message}}\n</div>";
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports = "<div class=\"wda_screen_highlight\"></div>";
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 module.exports = "<div class=\"wda_screen_lock-overlay\">\n    <div class=\"wda_screen_lock-overlay_spinner\"></div>\n</div>";
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
+var tpl = {
+    form: require('./tpl/form.html')
+};
+
+var Search = function($el, options) {
+
+    var _isLocked = false;
+
+    var _render = function($content) {
+        $el
+            .empty()
+            .append($content);
+    };
+
+    var _lock = function() {
+        if (_isLocked) {
+            return false;
+        }
+
+        $el
+            .find('input')
+            .attr('readonly', 'readonly');
+        _isLocked = true;
+
+        return true;
+    };
+
+    var _unlock = function() {
+        $el
+            .find('input')
+            .removeAttr('readonly');
+        _isLocked = false;
+    };
+
+    // INIT
+    (function() {
+        var $form = $(tpl.form);
+        $form.on('submit', function() {
+            if (_lock()) {
+                var locator = $(this).find('input[name="value"]').val();
+                $.ajax({
+                    method: 'POST',
+                    url: options.url,
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: options.success,
+                    error: function(jqXHR) {
+                        if (jqXHR.status === 400) {
+                            options.notFound(locator);
+                        } else {
+                            options.error(locator);
+                        }
+                    },
+                    complete: function() {
+                        _unlock();
+                    }
+                });
+            }
+
+            return false;
+        });
+        _render($form);
+    })();
+
+};
+
+module.exports = Search;
+},{"./tpl/form.html":9}],9:[function(require,module,exports){
+module.exports = "<form class=\"navbar-form navbar-right\" id=\"search-form\">\n    <div class=\"form-group\">\n        <select name=\"using\" class=\"form-control\">\n            <option value=\"xui\">Xui</option>\n            <option value=\"xpath\">Xpath</option>\n        </select>\n    </div>\n    <div class=\"form-group\">\n        <input name=\"value\" type=\"text\" placeholder=\"Locator\" class=\"form-control\" style=\"width: 800px;\">\n    </div>\n    <button type=\"submit\" class=\"btn btn-success\"><i class=\"glyphicon glyphicon-search\"></i></button>\n</form>";
+
+},{}],10:[function(require,module,exports){
 var Mustache = require('mustache');
 var tpl = {
     item: require('./tpl/item.html'),
@@ -271,19 +370,20 @@ var Tree = function($el) {
 };
 
 module.exports = Tree;
-},{"./tpl/error.html":8,"./tpl/item.html":9,"./tpl/lockOverlay.html":10,"mustache":12}],8:[function(require,module,exports){
+},{"./tpl/error.html":11,"./tpl/item.html":12,"./tpl/lockOverlay.html":13,"mustache":15}],11:[function(require,module,exports){
 module.exports = "<div class=\"tree_error\">\n    {{message}}\n</div>";
 
-},{}],9:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports = "{{#hasChildren}}\n    <a href=\"#\"><i class=\"glyphicon glyphicon-minus element-with-children\"></i></a>\n{{/hasChildren}}\n<span class=\"label label-default el-type\" data-rect=\"{{rectStr}}\">\n    <strong>[{{type}}]</strong>\n</span>\n{{#rawIdentifier}}\n    <span class=\"el-id label label-success\">{{rawIdentifier}}</span>\n{{/rawIdentifier}}\n<span class=\"el-label\">{{label}}</span>";
 
-},{}],10:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = "<div class=\"tree_lock-overlay\">\n    <div class=\"tree_lock-overlay_spinner\"></div>\n</div>";
 
-},{}],11:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 var Screen = require('./Screen/Screen.js');
 var Tree = require('./Tree/Tree.js');
 var Info = require('./Info/Info.js');
+var Search = require('./Search/Search.js');
 
 $(function () {
 
@@ -325,6 +425,7 @@ $(function () {
             rect.size.width,
             rect.size.height
         );
+        screen.highlightSelection();
         info.update(infoData);
     });
     $.ajax({
@@ -345,21 +446,22 @@ $(function () {
         }
     });
 
-    $('#search-form').submit(function () {
-        $.post("/find", $(this).serialize())
-            .done(function (data) {
-                tree.select(data.value); // todo надо бы id
-            })
-            .fail(function (data) {
-                alert(data.responseJSON.message);
-            });
-
-        return false;
+    var search = new Search($('#navbar'), {
+        url: '/find',
+        success: function(data) {
+            tree.select(data.value); // todo надо бы id
+        },
+        notFound: function(locator) {
+            info.error(locator + ' not found!');
+        },
+        error: function(locator) {
+            info.error('Wrong locator ' + locator);
+        }
     });
 
 });
 
-},{"./Info/Info.js":1,"./Screen/Screen.js":3,"./Tree/Tree.js":7}],12:[function(require,module,exports){
+},{"./Info/Info.js":1,"./Screen/Screen.js":4,"./Search/Search.js":8,"./Tree/Tree.js":10}],15:[function(require,module,exports){
 /*!
  * mustache.js - Logic-less {{mustache}} templates with JavaScript
  * http://github.com/janl/mustache.js
@@ -990,4 +1092,4 @@ $(function () {
 
 }));
 
-},{}]},{},[11]);
+},{}]},{},[14]);

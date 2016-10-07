@@ -5,6 +5,8 @@
   "main": "main.js",
   "devDependencies": {
     "browserify": "^13.1.0",
+    "postcss-cli": "^2.6.0",
+    "postcss-import": "^8.1.2",
     "stringify": "^5.1.0"
   },
   "dependencies": {
