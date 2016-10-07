@@ -152,6 +152,7 @@ var Tree = function($el) {
         for (var i = 0; i < elements.length; ++i) {
             var item = elements[i];
             item.hasChildren = item.children? true : false;
+            item.rectStr = JSON.stringify(item.rect);
             var
                 $li = $('<li />'),
                 $item = $(Mustache.render(tpl.item, item));
@@ -167,6 +168,14 @@ var Tree = function($el) {
                 return false;
             });
             $li.on('click.wda-inspector', '.el-type', item, function(e) {
+                $el
+                    .find(".el-type.label-primary")
+                    .removeClass("label-primary")
+                    .addClass("label-default");
+                $(this)
+                    .removeClass("label-default")
+                    .addClass("label-primary");
+
                 _onElementSelect(e.data, e.data.rect);
 
                 return false;
@@ -180,6 +189,28 @@ var Tree = function($el) {
 
             $list.append($li);
         }
+
+        $list.on("click", ".element-with-children", function () {
+            var $this = $(this);
+            if ($this.hasClass("glyphicon-minus")) {
+                $this
+                    .removeClass("glyphicon-minus")
+                    .addClass("glyphicon-plus")
+                    .closest("li")
+                    .children("ul")
+                    .css("display", "none");
+            } else {
+                $this
+                    .removeClass("glyphicon-plus")
+                    .addClass("glyphicon-minus")
+                    .closest("li")
+                    .children("ul")
+                    .addClass("glyphicon-minus")
+                    .css("display", "block");
+            }
+
+            return false;
+        });
 
         return $list;
     };
@@ -211,6 +242,12 @@ var Tree = function($el) {
         _render($list);
     };
 
+    this.select = function(rect) {
+        $el
+            .find(".el-type[data-rect='" + JSON.stringify(rect) + "']")
+            .click();
+    };
+
     // Назначить обработчик на фокус элемента
     this.onElementFocus = function(handler) {
         _onElementFocus = handler;
@@ -239,7 +276,7 @@ module.exports = Tree;
 module.exports = "<div class=\"tree_error\">\n    {{message}}\n</div>";
 
 },{}],9:[function(require,module,exports){
-module.exports = "{{#hasChildren}}\n    <a href=\"#\"><i class=\"glyphicon glyphicon-minus element-with-children\"></i></a>\n{{/hasChildren}}\n<span class=\"label label-default el-type\">\n    <strong>[{{type}}]</strong>\n</span>\n{{#rawIdentifier}}\n    <span class=\"el-id label label-success\">{{rawIdentifier}}</span>\n{{/rawIdentifier}}\n<span class=\"el-label\">{{label}}</span>";
+module.exports = "{{#hasChildren}}\n    <a href=\"#\"><i class=\"glyphicon glyphicon-minus element-with-children\"></i></a>\n{{/hasChildren}}\n<span class=\"label label-default el-type\" data-rect=\"{{rectStr}}\">\n    <strong>[{{type}}]</strong>\n</span>\n{{#rawIdentifier}}\n    <span class=\"el-id label label-success\">{{rawIdentifier}}</span>\n{{/rawIdentifier}}\n<span class=\"el-label\">{{label}}</span>";
 
 },{}],10:[function(require,module,exports){
 module.exports = "<div class=\"tree_lock-overlay\">\n    <div class=\"tree_lock-overlay_spinner\"></div>\n</div>";
@@ -307,6 +344,18 @@ $(function () {
         error: function() {
             tree.error('Не удалось загрузить дерево элементов');
         }
+    });
+
+    $('#search-form').submit(function () {
+        $.post("/find", $(this).serialize())
+            .done(function (data) {
+                tree.select(data.value); // todo надо бы id
+            })
+            .fail(function (data) {
+                alert(data.responseJSON.message);
+            });
+
+        return false;
     });
 
 });

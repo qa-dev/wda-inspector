@@ -65,12 +65,12 @@ $(function () {
     $('#search-form').submit(function () {
         $.post("/find", $(this).serialize())
             .done(function (data) {
-                selectEl($(".el-type[data-rect='" + JSON.stringify(data.value) + "']"))
-                drawRect(data.value)
+                tree.select(data.value); // todo надо бы id
             })
             .fail(function (data) {
                 alert(data.responseJSON.message);
             });
+
         return false;
     });
 

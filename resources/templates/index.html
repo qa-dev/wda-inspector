@@ -16,6 +16,8 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <link href="/static/wda-inspector/main.css" rel="stylesheet">
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -39,6 +41,19 @@
         </div>
     </div>
 </nav>
+
+<div class="wda_container">
+    <div class="wda_info">
+        <div class="wda_info_container"></div>
+    </div>
+    <div class="wda_screen">
+        <div class="wda_screen_container"></div>
+    </div>
+    <div class="wda_tree">
+        <div class="wda_tree_container"></div>
+    </div>
+</div>
+
 <div class="container" style="margin-top: 60px;">
     <div class="raw content-wr">
         <div class="col-md-12 col-lg-12 bordered text-center"><div id="element-data"></div></div>
@@ -57,183 +72,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="/static/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript">
-    function updateScreen() {
-        $.get("/screenshot")
-            .done(function (data) {
-                var $canvas = $("#img");
-                var ctx = $canvas.get(0).getContext("2d");
-                var image = new Image();
-                image.onload = function() {
-                    var w = image.width / 2,
-                        h = image.height / 2;
-                    $canvas.prop({'width': w, 'height': h});
-                    $('#screenshot').css({'width': w, 'height': h});
-                    ctx.drawImage(image, 0, 0, w, h);
-                };
-                image.src = "data:image/png;base64," + data.img;
-            })
-            .fail(function (data) {
-                alert(data.responseJSON.message);
-            });
-    }
 
-    function updateSource() {
-        $.get("/source")
-                .done(function (data) {
-                    var html = buildList(data.tree);
-                    $('#tree').html(html);
+<script src="/static/wda-inspector/main.js"></script>
 
-                    $(document).on("click", ".element-with-children", function () {
-                        if ($(this).hasClass("glyphicon-minus")) {
-                            $(this).closest("li").children("ul").css("display", "none");
-                            $(this).removeClass("glyphicon-minus");
-                            $(this).addClass("glyphicon-plus");
-                        } else {
-                            $(this).closest("li").children("ul").css("display", "block");
-                            $(this).removeClass("glyphicon-plus");
-                            $(this).addClass("glyphicon-minus");
-                        }
-                    });
-
-                    $(".el-type").hover(function () {
-                        var data = $(this).data('rect');
-                        drawRect(data)
-                    }, function () {
-                        if ($(".el-type.label-primary").length > 0) {
-                            data = $(".el-type.label-primary").data('rect');
-                            drawRect(data);
-                        }
-                    });
-
-                    $(document).on("click", ".el-type", function () {
-                        selectEl($(this));
-                        var data = $(this).data('rect');
-                        drawRect(data)
-                        return false;
-                    });
-                })
-                .fail(function (data) {
-                    alert(data.responseJSON.message);
-                });
-    }
-
-    function selectEl(el) {
-        $(".el-type.label-primary").removeClass("label-primary").addClass("label-default");
-        el.removeClass("label-default").addClass("label-primary");
-        var info = el.data('info')
-        var html = "";
-        $.each(info, function (key, value) {
-            html += '<strong>' + key + ':</strong> ' + value + '<br />'
-        })
-        $("#element-data").html(html);
-    }
-
-
-    function buildList(data){
-        var html = '<ul>';
-        data = data.children;
-        for(var i = 0; i < data.length; i++){
-            var info = {
-                "Class": data[i].type,
-                "Name": data[i].name,
-                "Label": data[i].label,
-                "Value": data[i].value,
-                "Rect": data[i].frame,
-                "isEnabled": data[i].isEnabled,
-                "isVisible": data[i].isVisible
-            };
-            html += '<li>';
-            if(data[i].children != null){
-                html += '<a href="#"><i class="glyphicon glyphicon-minus element-with-children"></i></a>' + buildName(info, data[i]);
-                html += buildList(data[i]);
-            } else {
-                html += "<span style='padding-right: 6px;'>&nbsp;</span>" + buildName(info, data[i]);
-            }
-            html += '</li>';
-        }
-        html += '</ul>';
-        return html;
-    }
-
-
-    function drawRect(data) {
-        $("#screenshot .highlight-el").css('top', data.origin.y + 'px');
-        $("#screenshot .highlight-el").css('left', data.origin.x + 'px');
-        $("#screenshot .highlight-el").css('width', data.size.width + 'px');
-        $("#screenshot .highlight-el").css('height', data.size.height + 'px');
-    }
-
-
-    function buildName(info, struct) {
-        var id = struct.rawIdentifier ? '<span class="el-id label label-success">ID: ' + struct.rawIdentifier + '</span>' : '';
-        info = JSON.stringify(info);
-        rect = JSON.stringify(struct.rect);
-        return '<span class="label label-default el-type" data-info=\'' + info + '\' data-rect=\'' + rect + '\'><strong>[ ' + struct.type + ' ]</strong></span>' +
-                id +
-                '<span class="el-label">' + struct.label + '</span>';
-    }
-
-
-    $(function () {
-        $('#search-form').submit(function () {
-            $.post("/find", $(this).serialize())
-                    .done(function (data) {
-                        selectEl($(".el-type[data-rect='" + JSON.stringify(data.value) + "']"))
-                        drawRect(data.value)
-                    })
-                    .fail(function (data) {
-                        alert(data.responseJSON.message);
-                    });
-            return false;
-        });
-
-        updateScreen();
-        updateSource();
-    });
-</script>
-
-<style>
-    #screenshot {
-        margin: 0 auto;
-        position: relative;
-    }
-    #screenshot .highlight-el {
-        z-index: 1000;
-        position: absolute;
-        background-color: rgba(255,0,0, 0.3);
-    }
-    #screenshot img {
-        border: 1px solid #D5DCDE;
-        position: relative;
-        top:0px;
-        left:0px;
-    }
-    .bordered {
-        border: 1px solid #D5DCDE;
-        padding: 30px;
-    }
-    #tree {
-        height: 500px;
-        overflow: auto;
-    }
-    #tree ul {
-        padding-left: 20px;
-    }
-    #tree ul li {
-        list-style: none;
-        font-size: 16px;
-    }
-    #tree ul a {
-        margin-right: 5px;
-    }
-    #tree ul li span {
-        margin-right: 10px;
-    }
-    #tree ul li span.el-label {
-        line-height: 22px;
-        vertical-align: middle;
-    }
-</style>
 </body>
 </html>
