@@ -9,10 +9,6 @@ type GetTextResponse struct {
 	Status int    `json:"status"`
 }
 
-type GetTextRequest struct {
-	ElementId string `json:"elementId"`
-}
-
 func (c *Client) GetText(elementId string) (*GetTextResponse, error) {
 	session, err := c.getSession()
 	if err != nil {
