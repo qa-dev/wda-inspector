@@ -31,7 +31,7 @@ func setHandlers(mux *http.ServeMux, iClient *wda.Client) {
 	mux.Handle("/screenshot", middleware.New(handlers.NewScreenshotHandler(iClient)))
 	mux.Handle("/source", middleware.New(handlers.NewSourceHandler(iClient)))
 	mux.Handle("/find", middleware.New(handlers.NewFindHandler(iClient)))
-	mux.Handle("/get-text", middleware.New(handlers.NewGetTextHandler(iClient)))
+	mux.Handle("/getText", middleware.New(handlers.NewGetTextHandler(iClient)))
 	mux.Handle("/", middleware.New(handlers.NewIndexPage()))
 }
 

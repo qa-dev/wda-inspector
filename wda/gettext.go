@@ -2,6 +2,7 @@ package wda
 
 import (
 	"encoding/json"
+	"errors"
 )
 
 type GetTextResponse struct {
@@ -10,6 +11,9 @@ type GetTextResponse struct {
 }
 
 func (c *Client) GetText(elementId string) (*GetTextResponse, error) {
+	if (elementId == "") {
+		return nil, errors.New("Blank element id")
+	}
 	session, err := c.getSession()
 	if err != nil {
 		return nil, err
@@ -18,10 +22,10 @@ func (c *Client) GetText(elementId string) (*GetTextResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	var textResp *GetTextResponse
+	var textResp GetTextResponse
 	err = json.Unmarshal(res, &textResp)
 	if err != nil {
 		return nil, err
 	}
-	return textResp, nil
+	return &textResp, nil
 }
