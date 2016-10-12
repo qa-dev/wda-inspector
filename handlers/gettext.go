@@ -34,7 +34,7 @@ func (h *GetTextHandler) getText(elementId string) (*wda.GetTextResponse, error)
 func (h *GetTextHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	elementId := req.FormValue("elementId")
 	if elementId == "" {
-		response.Json(resp, NewJsonError(errors.New("Blank element id")), http.StatusInternalServerError)
+		response.Json(resp, NewJsonError("Blank element id"), http.StatusInternalServerError)
 		return
 	}
 	s, err := h.getText(elementId)
