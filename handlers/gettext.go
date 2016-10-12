@@ -8,19 +8,19 @@ import (
 	"net/http"
 )
 
-type TextHandler struct {
+type GetTextHandler struct {
 	WdaClient *wda.Client
 }
 
-type TextResponse struct {
+type GetTextResponse struct {
 	Text string
 }
 
-func NewTextHandler(c *wda.Client) *TextHandler {
-	return &TextHandler{WdaClient: c}
+func NewGetTextHandler(c *wda.Client) *GetTextHandler {
+	return &GetTextHandler{WdaClient: c}
 }
 
-func (h *TextHandler) get(elementId string) (*wda.TextResponse, error) {
+func (h *GetTextHandler) get(elementId string) (*wda.GetTextResponse, error) {
 	res, err := h.WdaClient.GetText(elementId)
 	if err != nil {
 		return nil, err
@@ -31,16 +31,12 @@ func (h *TextHandler) get(elementId string) (*wda.TextResponse, error) {
 	return res, err
 }
 
-func (h *TextHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
+func (h *GetTextHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	s, err := h.get(req.FormValue("elementId"))
 	if err != nil {
 		log.Printf(err.Error())
 		response.Json(resp, NewJsonError(err.Error()), http.StatusInternalServerError)
 		return
 	}
-	//if s.Value.Type == element.TypeOther {
-	//	response.Json(resp, NewJsonError("Element not found on page"), http.StatusBadRequest)
-	//	return
-	//}
-	// TODO
+	response.Json(resp, s, http.StatusOK)
 }
