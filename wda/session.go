@@ -15,14 +15,14 @@ type SessionResponse struct {
 func (c *Client) session() (*SessionResponse, error) {
 	req := make(map[string]map[string]string, 1)
 	tmpMap := make(map[string]string, 1)
-	tmpMap["bundleId"] = c.BundleId()
+	tmpMap["bundleId"] = c.Client.BundleId()
 	req["desiredCapabilities"] = tmpMap
 	reqRaw, err := json.Marshal(req)
 	log.Printf(string(reqRaw))
 	if err != nil {
 		return nil, err
 	}
-	res, err := c.post("/session", reqRaw)
+	res, err := c.Client.post("/session", reqRaw)
 	log.Printf(string(res))
 	if err != nil {
 		return nil, err

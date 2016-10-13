@@ -18,7 +18,7 @@ func (c *Client) GetText(elementId string) (*GetTextResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	res, err := c.get("/session/" + session + "/element/" + elementId + "/text")
+	res, err := c.Client.get("/session/" + session + "/element/" + elementId + "/text")
 	if err != nil {
 		return nil, err
 	}
