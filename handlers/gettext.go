@@ -20,7 +20,7 @@ func NewGetTextHandler(c *wda.Client) *GetTextHandler {
 	return &GetTextHandler{WdaClient: c}
 }
 
-func (h *GetTextHandler) getText(elementId string) (*wda.GetTextResponse, error) {
+func (h *GetTextHandler) getTextResponse(elementId string) (*wda.GetTextResponse, error) {
 	res, err := h.WdaClient.GetText(elementId)
 	if err != nil {
 		return nil, err
@@ -37,7 +37,7 @@ func (h *GetTextHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request) 
 		response.Json(resp, NewJsonError("Blank element id"), http.StatusInternalServerError)
 		return
 	}
-	s, err := h.getText(elementId)
+	s, err := h.getTextResponse(elementId)
 	if err != nil {
 		log.Printf(err.Error())
 		response.Json(resp, NewJsonError(err.Error()), http.StatusInternalServerError)
