@@ -17,7 +17,7 @@ type WdaClient struct {
 	bundleId string
 }
 
-func NewClient(ip string, port string, bundleId string) *WdaClient {
+func NewWdaClient(ip string, port string, bundleId string) *WdaClient {
 	return &WdaClient{ip: ip, port: port, bundleId: bundleId}
 }
 

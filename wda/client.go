@@ -4,10 +4,6 @@ type Client struct {
 	Client Requester
 }
 
-func NewBasicClient() *Client {
-	return &Client{}
-}
-
-func (c *Client) SetClient(r Requester) {
-	c.Client = r
+func NewClient(r Requester) *Client {
+	return &Client{Client: r}
 }

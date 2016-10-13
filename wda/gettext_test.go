@@ -51,8 +51,7 @@ func (c *FakeGettextRequesterClient) post(uri string, data []byte) ([]byte, erro
 
 func TestClient_GetText(t *testing.T) {
 	requester := &FakeGettextRequesterClient{}
-	client := NewBasicClient()
-	client.SetClient(requester)
+	client := NewClient(requester)
 
 	// test success
 	findResp, err := client.Find("xui", "findme")
