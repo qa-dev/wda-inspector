@@ -31,15 +31,15 @@ func (c *WdaClient) url(uri string) string {
 
 func (c *WdaClient) get(uri string) ([]byte, error) {
 	r, err := http.Get(c.url(uri))
-	return c.responseProcess(r, err)
+	return c.processResponse(r, err)
 }
 
 func (c *WdaClient) post(uri string, data []byte) ([]byte, error) {
 	r, err := http.Post(c.url(uri), "application/ajax", bytes.NewBuffer(data))
-	return c.responseProcess(r, err)
+	return c.processResponse(r, err)
 }
 
-func (c *WdaClient) responseProcess(r *http.Response, err error) ([]byte, error) {
+func (c *WdaClient) processResponse(r *http.Response, err error) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
