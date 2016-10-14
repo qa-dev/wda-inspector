@@ -1,11 +1,16 @@
 package wda
 
-import "github.com/qa-dev/wda-inspector/interfaces"
-
-type Client struct {
-	Client interfaces.Requester
+type Requester interface {
+	BundleId() string
+	Url(uri string) string
+	Get(uri string) ([]byte, error)
+	Post(uri string, data []byte) ([]byte, error)
 }
 
-func NewClient(r interfaces.Requester) *Client {
+type Client struct {
+	Client Requester
+}
+
+func NewClient(r Requester) *Client {
 	return &Client{Client: r}
 }
