@@ -23,7 +23,7 @@ func (c *Client) Rect(elId string) (*RectResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	res, err := c.Client.get("/session/" + session + "/element/" + elId + "/rect")
+	res, err := c.Client.Get("/session/" + session + "/element/" + elId + "/rect")
 	if err != nil {
 		return nil, err
 	}

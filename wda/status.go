@@ -8,7 +8,7 @@ type Status struct {
 }
 
 func (c *Client) status() (*Status, error) {
-	res, err := c.Client.get("/status")
+	res, err := c.Client.Get("/status")
 	if err != nil {
 		return nil, err
 	}

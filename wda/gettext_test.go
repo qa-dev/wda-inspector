@@ -13,11 +13,11 @@ func (c *FakeGettextRequesterClient) BundleId() string {
 	return "fake.bundleid"
 }
 
-func (c *FakeGettextRequesterClient) url(uri string) string {
+func (c *FakeGettextRequesterClient) Url(uri string) string {
 	return "http://fakeurl.fake:80/" + uri
 }
 
-func (c *FakeGettextRequesterClient) get(uri string) ([]byte, error) {
+func (c *FakeGettextRequesterClient) Get(uri string) ([]byte, error) {
 	var res string
 
 	switch uri {
@@ -31,7 +31,7 @@ func (c *FakeGettextRequesterClient) get(uri string) ([]byte, error) {
 	return []byte(res), nil
 }
 
-func (c *FakeGettextRequesterClient) post(uri string, data []byte) ([]byte, error) {
+func (c *FakeGettextRequesterClient) Post(uri string, data []byte) ([]byte, error) {
 	var res string
 
 	switch uri {

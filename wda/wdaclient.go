@@ -25,17 +25,17 @@ func (c *WdaClient) BundleId() string {
 	return c.bundleId
 }
 
-func (c *WdaClient) url(uri string) string {
+func (c *WdaClient) Url(uri string) string {
 	return "http://" + c.ip + ":" + c.port + uri
 }
 
-func (c *WdaClient) get(uri string) ([]byte, error) {
-	r, err := http.Get(c.url(uri))
+func (c *WdaClient) Get(uri string) ([]byte, error) {
+	r, err := http.Get(c.Url(uri))
 	return c.processResponse(r, err)
 }
 
-func (c *WdaClient) post(uri string, data []byte) ([]byte, error) {
-	r, err := http.Post(c.url(uri), "application/ajax", bytes.NewBuffer(data))
+func (c *WdaClient) Post(uri string, data []byte) ([]byte, error) {
+	r, err := http.Post(c.Url(uri), "application/ajax", bytes.NewBuffer(data))
 	return c.processResponse(r, err)
 }
 
