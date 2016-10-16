@@ -2,11 +2,11 @@ package handlers
 
 import (
 	"errors"
+	"github.com/qa-dev/go-core/response"
 	"github.com/qa-dev/wda-inspector/element"
 	"github.com/qa-dev/wda-inspector/wda"
 	"log"
 	"net/http"
-	"github.com/qa-dev/go-core/response"
 )
 
 type FindHandler struct {

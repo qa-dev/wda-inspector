@@ -20,10 +20,10 @@ type ElementSource struct {
 		} `json:"size"`
 	} `json:"rect"`
 	Value         interface{} `json:"value"`
-	Label         string `json:"label"`
-	Type          string `json:"type"`
-	Name          string `json:"name"`
-	RawIdentifier string `json:"rawIdentifier"`
+	Label         string      `json:"label"`
+	Type          string      `json:"type"`
+	Name          string      `json:"name"`
+	RawIdentifier string      `json:"rawIdentifier"`
 }
 
 type Source struct {

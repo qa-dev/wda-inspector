@@ -3,11 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/qa-dev/go-core/middleware"
 	"github.com/qa-dev/wda-inspector/handlers"
 	"github.com/qa-dev/wda-inspector/wda"
 	"log"
 	"net/http"
-	"github.com/qa-dev/go-core/middleware"
 )
 
 func main() {
