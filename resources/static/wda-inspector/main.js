@@ -228,7 +228,7 @@ var Search = function($el, options) {
 
 module.exports = Search;
 },{"./tpl/form.html":9}],9:[function(require,module,exports){
-module.exports = "<form class=\"navbar-form navbar-right\" id=\"search-form\">\n    <div class=\"form-group\">\n        <select name=\"using\" class=\"form-control\">\n            <option value=\"xui\">Xui</option>\n            <option value=\"xpath\">Xpath</option>\n        </select>\n    </div>\n    <div class=\"form-group\">\n        <input name=\"value\" type=\"text\" placeholder=\"Locator\" class=\"form-control\" style=\"width: 800px;\">\n    </div>\n    <button type=\"submit\" class=\"btn btn-success\"><i class=\"glyphicon glyphicon-search\"></i></button>\n</form>";
+module.exports = "<form class=\"navbar-form navbar-right\" id=\"search-form\">\n    <div class=\"form-group\">\n        <select name=\"using\" class=\"form-control\">\n            <option value=\"xui\">Xui</option>\n            <option value=\"xpath\">Xpath</option>\n            <option value=\"predicate string\">Predicate string</option>\n            <option value=\"class name\">Class name</option>\n            <option value=\"link text\">Link text</option>\n            <option value=\"partial link text\">Partial link text</option>\n        </select>\n    </div>\n    <div class=\"form-group\">\n        <input name=\"value\" type=\"text\" placeholder=\"Locator\" class=\"form-control\" style=\"width: 800px;\">\n    </div>\n    <button type=\"submit\" class=\"btn btn-success\"><i class=\"glyphicon glyphicon-search\"></i></button>\n</form>";
 
 },{}],10:[function(require,module,exports){
 var Mustache = require('mustache');
