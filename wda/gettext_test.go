@@ -9,10 +9,6 @@ import (
 
 type FakeGettextRequesterClient struct{}
 
-func (c *FakeGettextRequesterClient) BundleId() string {
-	return "fake.bundleid"
-}
-
 func (c *FakeGettextRequesterClient) Url(uri string) string {
 	return "http://fakeurl.fake:80/" + uri
 }
@@ -51,7 +47,7 @@ func (c *FakeGettextRequesterClient) Post(uri string, data []byte) ([]byte, erro
 
 func TestClient_GetText(t *testing.T) {
 	requester := &FakeGettextRequesterClient{}
-	client := NewClient(requester)
+	client := NewClient(requester, "fake.bundleid")
 
 	// test success
 	findResp, err := client.Find("xui", "findme")

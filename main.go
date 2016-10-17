@@ -22,8 +22,8 @@ func main() {
 	if bundleId == "" {
 		log.Fatal("Please set bundle id, for example '-bundleId=com.apple.mobilesafari'")
 	}
-	requester := wda.NewWdaClient(iHost, iPort, bundleId)
-	iClient := wda.NewClient(requester)
+	requester := wda.NewHttpClient(iHost, iPort)
+	iClient := wda.NewClient(requester, bundleId)
 	mux := http.NewServeMux()
 	setHandlers(mux, iClient)
 

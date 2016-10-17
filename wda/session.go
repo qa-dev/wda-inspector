@@ -15,7 +15,7 @@ type SessionResponse struct {
 func (c *Client) session() (*SessionResponse, error) {
 	req := make(map[string]map[string]string, 1)
 	tmpMap := make(map[string]string, 1)
-	tmpMap["bundleId"] = c.Client.BundleId()
+	tmpMap["bundleId"] = c.BundleId()
 	req["desiredCapabilities"] = tmpMap
 	reqRaw, err := json.Marshal(req)
 	log.Printf(string(reqRaw))
