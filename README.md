@@ -1,7 +1,7 @@
 wda-inspector [![Build Status](https://travis-ci.org/qa-dev/wda-inspector.png?branch=master)](https://travis-ci.org/qa-dev/wda-inspector)
 =============
 
-*wda-inspector* is a useful inspector of [qa-dev/WebDriverAgent](https://github.com/qa-dev/WebDriverAgent) (forked from [facebook/WebDriverAgent](https://github.com/facebook/WebDriverAgent))
+**wda-inspector** is a useful inspector of [qa-dev/WebDriverAgent](https://github.com/qa-dev/WebDriverAgent) (forked from [facebook/WebDriverAgent](https://github.com/facebook/WebDriverAgent))
 written in Go.
  
 Build
