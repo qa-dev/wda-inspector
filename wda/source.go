@@ -34,7 +34,7 @@ type Source struct {
 }
 
 func (c *Client) Source() (*Source, error) {
-	res, err := c.Client.Get("/source")
+	res, err := c.httpClient.Get("/source")
 	if err != nil {
 		return nil, err
 	}

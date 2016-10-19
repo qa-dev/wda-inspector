@@ -18,7 +18,7 @@ func (c *Client) GetText(elementId string) (*GetTextResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	res, err := c.Client.Get("/session/" + session + "/element/" + elementId + "/text")
+	res, err := c.httpClient.Get("/session/" + session + "/element/" + elementId + "/text")
 	if err != nil {
 		return nil, err
 	}

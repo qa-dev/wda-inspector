@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"github.com/qa-dev/go-core/response"
+	"github.com/qa-dev/wda-inspector/net"
 )
 
 type FindHandler struct {
@@ -26,7 +27,7 @@ func (h *FindHandler) find(using string, value string) (*wda.FindResponse, error
 	if err != nil {
 		return nil, err
 	}
-	if res.Status != wda.StatusOK {
+	if res.Status != net.StatusOK {
 		return nil, errors.New("Bad status from inspector")
 	}
 	return res, err
@@ -37,7 +38,7 @@ func (h *FindHandler) rect(elId string) (*wda.RectResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	if res.Status != wda.StatusOK {
+	if res.Status != net.StatusOK {
 		return nil, errors.New("Bad status from inspector")
 	}
 	return res, err

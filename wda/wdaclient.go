@@ -1,18 +1,14 @@
 package wda
 
-type Requester interface {
-	Url(uri string) string
-	Get(uri string) ([]byte, error)
-	Post(uri string, data []byte) ([]byte, error)
-}
+import "github.com/qa-dev/wda-inspector/net"
 
 type Client struct {
-	Client   Requester
-	bundleId string
+	httpClient net.Requester
+	bundleId   string
 }
 
-func NewClient(r Requester, bundleId string) *Client {
-	return &Client{Client: r, bundleId: bundleId}
+func NewClient(r net.Requester, bundleId string) *Client {
+	return &Client{httpClient: r, bundleId: bundleId}
 }
 
 func (c *Client) BundleId() string {

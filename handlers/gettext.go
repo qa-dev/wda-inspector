@@ -6,6 +6,7 @@ import (
 	"github.com/qa-dev/wda-inspector/wda"
 	"log"
 	"net/http"
+	"github.com/qa-dev/wda-inspector/net"
 )
 
 type GetTextHandler struct {
@@ -25,7 +26,7 @@ func (h *GetTextHandler) getTextResponse(elementId string) (*wda.GetTextResponse
 	if err != nil {
 		return nil, err
 	}
-	if res.Status != wda.StatusOK {
+	if res.Status != net.StatusOK {
 		return nil, errors.New("Bad status from inspector")
 	}
 	return res, err

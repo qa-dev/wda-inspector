@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"github.com/qa-dev/go-core/response"
+	"github.com/qa-dev/wda-inspector/net"
 )
 
 type SourceHandler struct {
@@ -25,7 +26,7 @@ func (h *SourceHandler) source() (*wda.Source, error) {
 	if err != nil {
 		return nil, err
 	}
-	if sc.Status != wda.StatusOK {
+	if sc.Status != net.StatusOK {
 		return nil, errors.New("Bad status from inspector")
 	}
 	return sc, err

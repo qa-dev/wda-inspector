@@ -18,9 +18,9 @@ func (c *FakeGettextRequesterClient) Get(uri string) ([]byte, error) {
 
 	switch uri {
 	case "/status":
-		res = "{\"sessionId\": \"fakesession\", \"status\": 0}"
+		res = `{"sessionId": "fakesession", "status": 0}`
 	case "/session/fakesession/element/fakeelementid/text":
-		res = "{\"value\": \"FakeText\", \"status\": 0}"
+		res = `{"value": "FakeText", "status": 0}`
 	default:
 		return nil, errors.New("Error doing request")
 	}
@@ -35,7 +35,7 @@ func (c *FakeGettextRequesterClient) Post(uri string, data []byte) ([]byte, erro
 		var findResp FindRequest
 		err := json.Unmarshal(data, &findResp)
 		if err == nil && findResp.Value == "findme" {
-			res = "{\"value\": {\"ELEMENT\": \"fakeelementid\", \"type\": \"faketype\"}, \"status\": 0}"
+			res = `{"value": {"ELEMENT": "fakeelementid", "type": "faketype"}, "status": 0}`
 		} else {
 			return nil, errors.New("Error doing request")
 		}

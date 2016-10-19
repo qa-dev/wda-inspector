@@ -1,4 +1,4 @@
-package wda
+package net
 
 import (
 	"bytes"
@@ -10,6 +10,12 @@ import (
 const (
 	StatusOK = 0
 )
+
+type Requester interface {
+	Url(uri string) string
+	Get(uri string) ([]byte, error)
+	Post(uri string, data []byte) ([]byte, error)
+}
 
 type HttpClient struct {
 	ip       string

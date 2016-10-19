@@ -22,7 +22,7 @@ func (c *Client) session() (*SessionResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	res, err := c.Client.Post("/session", reqRaw)
+	res, err := c.httpClient.Post("/session", reqRaw)
 	log.Printf(string(res))
 	if err != nil {
 		return nil, err
