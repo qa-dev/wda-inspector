@@ -10,14 +10,10 @@ type ElementSource struct {
 	Frame     string           `json:"frame"`
 	Children  []*ElementSource `json:"children"`
 	Rect      struct {
-		Origin struct {
-			X float32 `json:"x"`
-			Y float32 `json:"y"`
-		} `json:"origin"`
-		Size struct {
-			Width  float32 `json:"width"`
-			Height float32 `json:"height"`
-		} `json:"size"`
+		X float32 `json:"x"`
+		Y float32 `json:"y"`
+		Width  float32 `json:"width"`
+		Height float32 `json:"height"`
 	} `json:"rect"`
 	Value         interface{} `json:"value"`
 	Label         string `json:"label"`
