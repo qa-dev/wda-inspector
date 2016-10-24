@@ -6,14 +6,10 @@ import (
 
 type RectResponse struct {
 	Value struct {
-		Origin struct {
-			X float32 `json:"x"`
-			Y float32 `json:"y"`
-		} `json:"origin"`
-		Size struct {
-			Width  float32 `json:"width"`
-			Height float32 `json:"height"`
-		} `json:"size"`
+		X float32 `json:"x"`
+		Y float32 `json:"y"`
+		Width  float32 `json:"width"`
+		Height float32 `json:"height"`
 	} `json:"value"`
 	Status int `json:"status"`
 }
