@@ -411,19 +411,19 @@ $(function () {
     var tree = new Tree($('.wda_tree_container'));
     tree.onElementFocus(function(rect) {
         screen.highlight(
-            rect.origin.x,
-            rect.origin.y,
-            rect.size.width,
-            rect.size.height
+            rect.x,
+            rect.y,
+            rect.width,
+            rect.height
         );
     });
     tree.onElementBlur(screen.highlightSelection);
     tree.onElementSelect(function(infoData, rect) {
         screen.select(
-            rect.origin.x,
-            rect.origin.y,
-            rect.size.width,
-            rect.size.height
+            rect.x,
+            rect.y,
+            rect.width,
+            rect.height
         );
         screen.highlightSelection();
         info.update(infoData);
