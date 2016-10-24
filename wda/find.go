@@ -27,7 +27,7 @@ func (c *Client) Find(using string, value string) (*FindResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	res, err := c.post("/session/"+session+"/element", reqBody)
+	res, err := c.httpClient.Post("/session/"+session+"/element", reqBody)
 	if err != nil {
 		return nil, err
 	}

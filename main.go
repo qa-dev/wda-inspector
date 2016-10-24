@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/qa-dev/wda-inspector/handlers"
 	"github.com/qa-dev/wda-inspector/wda"
+	"github.com/qa-dev/wda-inspector/net"
 	"log"
 	"net/http"
 	"github.com/qa-dev/go-core/middleware"
@@ -22,7 +23,8 @@ func main() {
 	if bundleId == "" {
 		log.Fatal("Please set bundle id, for example '-bundleId=com.apple.mobilesafari'")
 	}
-	iClient := wda.NewClient(iHost, iPort, bundleId)
+	requester := net.NewHttpClient(iHost, iPort)
+	iClient := wda.NewClient(requester, bundleId)
 	mux := http.NewServeMux()
 	setHandlers(mux, iClient)
 

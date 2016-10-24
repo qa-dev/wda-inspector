@@ -10,7 +10,7 @@ type Screenshot struct {
 }
 
 func (c *Client) Screenshot() (*Screenshot, error) {
-	res, err := c.get("/screenshot")
+	res, err := c.httpClient.Get("/screenshot")
 	if err != nil {
 		return nil, err
 	}
