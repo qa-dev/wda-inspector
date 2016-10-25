@@ -2,18 +2,19 @@ package main
 
 import (
 	"flag"
-	"fmt"
+	"github.com/qa-dev/go-core/middleware"
 	"github.com/qa-dev/wda-inspector/handlers"
 	"github.com/qa-dev/wda-inspector/wda"
 	"log"
+	"net"
 	"net/http"
-	"github.com/qa-dev/go-core/middleware"
 )
 
 func main() {
-	var iHost, iPort, bundleId string
+	var iHost, iPort, listenPort, bundleId string
 	flag.StringVar(&iHost, "h", "", "WDA host")
 	flag.StringVar(&iPort, "p", "8100", "WDA port, 8100 by default")
+	flag.StringVar(&listenPort, "l", "8888", "Port to listen by inspector, 8888 by default")
 	flag.StringVar(&bundleId, "bundleId", "", "Bundle Id, default 'ru.avito.services.dev'")
 	flag.Parse()
 	if iHost == "" {
@@ -26,7 +27,7 @@ func main() {
 	mux := http.NewServeMux()
 	setHandlers(mux, iClient)
 
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", 8888), mux))
+	log.Fatal(http.ListenAndServe(net.JoinHostPort("", listenPort), mux))
 }
 
 func setHandlers(mux *http.ServeMux, iClient *wda.Client) {
