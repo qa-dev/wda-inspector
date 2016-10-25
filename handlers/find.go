@@ -50,15 +50,16 @@ func (h *FindHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 		response.Json(resp, NewJsonError(err.Error()), http.StatusInternalServerError)
 		return
 	}
-	if f.Value.Type == element.TypeOther {
-		response.Json(resp, NewJsonError("Element not found on page"), http.StatusBadRequest)
-		return
-	}
 
 	r, err := h.rect(f.Value.ElementId)
 	if err != nil {
 		log.Printf(err.Error())
 		response.Json(resp, NewJsonError(err.Error()), http.StatusInternalServerError)
+		return
+	}
+
+	if f.Value.Type == element.TypeOther && r.IsInvalid() {
+		response.Json(resp, NewJsonError("Element not found on page"), http.StatusBadRequest)
 		return
 	}
 	response.Json(resp, r, http.StatusOK)

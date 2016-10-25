@@ -30,3 +30,10 @@ func (c *Client) Rect(elId string) (*RectResponse, error) {
 	}
 	return rectResp, nil
 }
+
+// IsInvalid проверяет, валидный ли элемент, если вдруг вместо нужного и
+// несуществующего элемента вернулся XCUIElementTypeElementOther, проверяя значения его /rect.
+// Если все нули – значит элемент не валиден
+func (r *RectResponse) IsInvalid() bool {
+	return r.Value.Height == 0 && r.Value.Width == 0 && r.Value.X == 0 && r.Value.Y == 0
+}
