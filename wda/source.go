@@ -10,16 +10,16 @@ type ElementSource struct {
 	Frame     string           `json:"frame"`
 	Children  []*ElementSource `json:"children"`
 	Rect      struct {
-		X float32 `json:"x"`
-		Y float32 `json:"y"`
+		X      float32 `json:"x"`
+		Y      float32 `json:"y"`
 		Width  float32 `json:"width"`
 		Height float32 `json:"height"`
 	} `json:"rect"`
 	Value         interface{} `json:"value"`
-	Label         string `json:"label"`
-	Type          string `json:"type"`
-	Name          string `json:"name"`
-	RawIdentifier string `json:"rawIdentifier"`
+	Label         string      `json:"label"`
+	Type          string      `json:"type"`
+	Name          string      `json:"name"`
+	RawIdentifier string      `json:"rawIdentifier"`
 }
 
 type Source struct {

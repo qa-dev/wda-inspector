@@ -11,7 +11,7 @@ type GetTextResponse struct {
 }
 
 func (c *Client) GetText(elementId string) (*GetTextResponse, error) {
-	if (elementId == "") {
+	if elementId == "" {
 		return nil, errors.New("Blank element id")
 	}
 	session, err := c.getSession()
