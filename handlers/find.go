@@ -21,7 +21,7 @@ func NewFindHandler(c *wda.Client) *FindHandler {
 	return &FindHandler{WdaClient: c}
 }
 
-func (h *FindHandler) find(using string, value string) (*wda.FindResponse, error) {
+func (h *FindHandler) find(using string, value string) (*wda.FindSuccessResponse, error) {
 	res, err := h.WdaClient.Find(using, value)
 	if err != nil {
 		return nil, err
