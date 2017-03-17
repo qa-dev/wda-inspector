@@ -15,8 +15,8 @@ type FindSuccessResponse struct {
 
 type FindErrorResponse struct {
 	Value struct {
-		Using      string `json:"using"`
-		Value string `json:"value"`
+		Using       string `json:"using"`
+		Value       string `json:"value"`
 		Description string `json:"description"`
 	} `json:"value"`
 	Status int

@@ -38,9 +38,3 @@ func setHandlers(mux *http.ServeMux, iClient *wda.Client) {
 	mux.Handle("/getText", middleware.New(handlers.NewGetTextHandler(iClient)))
 	mux.Handle("/", middleware.New(handlers.NewIndexPage()))
 }
-
-func fatalErr(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
-}
