@@ -6,14 +6,10 @@ import (
 
 type RectResponse struct {
 	Value struct {
-		Origin struct {
-			X float32 `json:"x"`
-			Y float32 `json:"y"`
-		} `json:"origin"`
-		Size struct {
-			Width  float32 `json:"width"`
-			Height float32 `json:"height"`
-		} `json:"size"`
+		X      float32 `json:"x"`
+		Y      float32 `json:"y"`
+		Width  float32 `json:"width"`
+		Height float32 `json:"height"`
 	} `json:"value"`
 	Status int `json:"status"`
 }
@@ -33,4 +29,11 @@ func (c *Client) Rect(elId string) (*RectResponse, error) {
 		return nil, err
 	}
 	return rectResp, nil
+}
+
+// IsInvalid проверяет, валидный ли элемент, если вдруг вместо нужного и
+// несуществующего элемента вернулся XCUIElementTypeElementOther, проверяя значения его /rect.
+// Если все нули – значит элемент не валиден
+func (r *RectResponse) IsInvalid() bool {
+	return r.Value.Height == 0 && r.Value.Width == 0 && r.Value.X == 0 && r.Value.Y == 0
 }
