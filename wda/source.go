@@ -23,14 +23,12 @@ type ElementSource struct {
 }
 
 type Source struct {
-	Value struct {
-		Tree *ElementSource `json:"tree"`
-	} `json:"value"`
+	Value *ElementSource `json:"value"`
 	Status int `json:"status"`
 }
 
 func (c *Client) Source() (*Source, error) {
-	res, err := c.get("/source")
+	res, err := c.get("/source?format=json")
 	if err != nil {
 		return nil, err
 	}

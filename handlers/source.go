@@ -34,7 +34,7 @@ func (h *SourceHandler) source() (*wda.Source, error) {
 func (h *SourceHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	s, err := h.source()
 	if err == nil {
-		data := &SourceResponse{Tree: s.Value.Tree}
+		data := &SourceResponse{Tree: s.Value}
 		response.Json(resp, data, http.StatusOK)
 	} else {
 		log.Printf(err.Error())
