@@ -29,4 +29,6 @@ Flags:
     	WDA host
 -p string
     	WDA port. optional (default "8100")
+-l string
+    	Port to listen. optional (default "8888")    	
 ```
