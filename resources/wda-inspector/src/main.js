@@ -67,7 +67,7 @@ $(function () {
     var search = new Search($('#navbar'), {
         url: '/find',
         success: function(data) {
-            tree.select(data.value); // todo надо бы id
+            tree.select(data.value, data.type); // todo надо бы id
         },
         notFound: function(locator) {
             info.error(locator + ' not found!');

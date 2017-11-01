@@ -7,6 +7,7 @@ import (
 	"github.com/qa-dev/wda-inspector/wda"
 	"log"
 	"net/http"
+	"strings"
 )
 
 type FindHandler struct {
@@ -15,6 +16,21 @@ type FindHandler struct {
 
 type FindResponse struct {
 	*wda.RectResponse
+}
+
+type TypeResponse struct {
+	*wda.GetTypeResponse
+}
+
+type Response struct {
+	Value struct {
+		X      float32 `json:"x"`
+		Y      float32 `json:"y"`
+		Width  float32 `json:"width"`
+		Height float32 `json:"height"`
+	} `json:"value"`
+	Type   string  `json:"type"`
+	Status int `json:"status"`
 }
 
 func NewFindHandler(c *wda.Client) *FindHandler {
@@ -43,6 +59,17 @@ func (h *FindHandler) rect(elId string) (*wda.RectResponse, error) {
 	return res, err
 }
 
+func (h *FindHandler) typ(elId string) (*wda.GetTypeResponse, error) {
+	typ, err := h.WdaClient.GetType(elId)
+	if err != nil {
+		return nil, err
+	}
+	if typ.Status != wda.StatusOK {
+		return nil, errors.New("Bad status from inspector")
+	}
+	return typ, err
+}
+
 func (h *FindHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	f, err := h.find(req.FormValue("using"), req.FormValue("value"))
 	if err != nil {
@@ -58,9 +85,24 @@ func (h *FindHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if f.Value.Type == element.TypeOther && r.IsInvalid() {
+	t, err := h.typ(f.Value.ElementId)
+	if err != nil {
+		log.Printf(err.Error())
+		response.Json(resp, NewJsonError(err.Error()), http.StatusInternalServerError)
+		return
+	}
+
+	var res Response
+	res.Type = strings.Replace(t.Value, "XCUIElementType", "", -1)
+	res.Value.Height = r.Value.Height
+	res.Value.Width = r.Value.Width
+	res.Value.X = r.Value.X
+	res.Value.Y = r.Value.Y
+	res.Status = res.Status
+
+	if res.Type == element.TypeOther && r.IsInvalid() {
 		response.Json(resp, NewJsonError("Element not found on page"), http.StatusBadRequest)
 		return
 	}
-	response.Json(resp, r, http.StatusOK)
+	response.Json(resp, res, http.StatusOK)
 }
