@@ -340,9 +340,9 @@ var Tree = function($el) {
         _render($list);
     };
 
-    this.select = function(rect) {
+    this.select = function(rect, type) {
         $el
-            .find(".el-type[data-rect='" + JSON.stringify(rect) + "']")
+            .find(".el-type[data-rect='" + JSON.stringify(rect) + "'] > :contains('[" + type + "]')")
             .click();
     };
 
@@ -449,7 +449,7 @@ $(function () {
     var search = new Search($('#navbar'), {
         url: '/find',
         success: function(data) {
-            tree.select(data.value); // todo надо бы id
+            tree.select(data.value, data.type); // todo надо бы id
         },
         notFound: function(locator) {
             info.error(locator + ' not found!');
